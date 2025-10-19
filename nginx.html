@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Nginx Sites</title>
+    <link rel="stylesheet" type="text/css" href="nginx.css">
+    <script src="../base1/cockpit.js"></script>
+    <script src="nginx.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="header-controls">
+            <h1>Nginx Sites</h1>
+            <button id="refresh-button" class="pf-c-button pf-m-primary">Refresh</button>
+        </div>
+
+        <!-- Статистика -->
+        <div id="stats-container" class="stats-grid"></div>
+
+        <!-- Таблица с сайтами -->
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th class="status-col">Status</th>
+                        <th>Domain & Title</th>
+                        <th>Type & Target</th>
+                        <th>Docker Container</th>
+                        <th>SSL Expiry</th>
+                    </tr>
+                </thead>
+                <tbody id="sites-tbody">
+                    <!-- Данные будут вставлены сюда с помощью JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="error-container" class="alert alert-danger hidden"></div>
+    </div>
+</body>
+</html>

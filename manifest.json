@@ -1,0 +1,8 @@
+{
+  "name": "nginx",
+  "label": "Nginx Sites",
+  "path": "nginx.html",
+  "description": "Displays detailed information about configured Nginx sites",
+  "icon": "pficon-server",
+  "permission": "superuser"
+}
