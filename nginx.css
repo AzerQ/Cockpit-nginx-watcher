@@ -1,76 +1,68 @@
-/* Контейнер для таблицы, чтобы позиционировать загрузчик относительно него */
+/* Контейнер для таблицы нужен для позиционирования спиннера */
 .table-container {
     position: relative;
-    margin-top: 24px; /* pf-global--spacer--lg */
+    min-height: 200px; /* Минимальная высота, чтобы спиннер выглядел хорошо при пустой таблице */
 }
 
-/* Оверлей для загрузчика */
+/* Оверлей для спиннера */
 #loader-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.7);
     z-index: 10;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Скрытый класс */
-.hidden {
+/* Переопределяем display: none Bootstrap для удобства */
+.d-none {
     display: none !important;
 }
 
-/* Мелкие доработки для контента в таблице */
+/* Стили для контента в таблице */
 .domain-link {
-    font-weight: 600; /* semi-bold */
+    font-weight: 600;
+    text-decoration: none;
 }
 .page-title {
     font-size: 0.9em;
-    color: #6a6e73; /* pf-global--Color--200 */
+    color: #6c757d; /* text-muted */
 }
-
 .target-path, .docker-container {
-    font-family: monospace;
-    background-color: #f5f5f5;
-    padding: 2px 4px;
-    border-radius: 3px;
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.9em;
 }
 
-/* Цветовые индикаторы статуса */
+/* Индикаторы статуса */
 .status-indicator {
     display: inline-block;
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    margin-right: 8px; /* pf-global--spacer--sm */
+    margin-right: 8px;
+    vertical-align: middle;
 }
-.status-up { background-color: #3e8635; } /* pf-global--success-color--100 */
-.status-error, .status-down { background-color: #c9190b; } /* pf-global--danger-color--100 */
+.status-up { background-color: #198754; } /* Bootstrap success */
+.status-error, .status-down { background-color: #dc3545; } /* Bootstrap danger */
 
 /* Цвета для срока действия SSL */
-.ssl-ok { color: #1e4f18; }
-.ssl-warning { color: #f0ad4e; font-weight: 600; }
-.ssl-critical { color: #c9190b; font-weight: 600; }
+.ssl-ok { color: #198754; }
+.ssl-warning { color: #ffc107; font-weight: 600; }
+.ssl-critical { color: #dc3545; font-weight: 600; }
+.ssl-warning span, .ssl-critical span { font-size: 0.9em; }
 
-.ssl-warning span, .ssl-critical span {
-    font-size: 0.9em;
-}
-
-/* Статистика */
+/* Карточки статистики */
 .stat-value {
-    font-size: 2em;
+    font-size: 2rem;
     font-weight: 600;
+    line-height: 1.1;
 }
 .stat-label {
-    font-size: 0.9em;
-    color: #6a6e73;
+    color: #6c757d;
 }
-.status-ok {
-    color: #3e8635;
-}
-.status-error {
-    color: #c9190b;
-}
+.status-ok { color: #198754; }
+.status-error { color: #dc3545; }

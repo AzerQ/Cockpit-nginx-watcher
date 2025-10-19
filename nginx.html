@@ -3,57 +3,69 @@
 <head>
     <meta charset="utf-8">
     <title>Nginx Sites</title>
-    <!-- CSS от Cockpit/PatternFly уже подключен на странице, мы используем его классы -->
+
+    <!-- Подключаем Bootstrap 5 с локального файла -->
+    <link href="lib/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Наши кастомные стили -->
     <link rel="stylesheet" type="text/css" href="nginx.css">
+    
     <script src="../base1/cockpit.js"></script>
-    <script src="nginx.js"></script>
 </head>
-<body>
-    <!-- PatternFly Page Structure -->
-    <div class="pf-c-page__main-section pf-m-light">
-        <div class="pf-l-level pf-m-gutter">
-            <h1 class="pf-c-title pf-m-2xl">Nginx Sites</h1>
-            <button id="refresh-button" class="pf-c-button pf-m-primary">Refresh</button>
+<body class="bg-light">
+
+    <div class="container-fluid my-4">
+        <!-- Заголовок и кнопка -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h2">Nginx Sites</h1>
+            <button id="refresh-button" class="btn btn-primary">Refresh</button>
         </div>
 
-        <!-- Статистика в виде карточек PatternFly -->
-        <div id="stats-container" class="pf-l-grid pf-m-gutter">
-            <!-- Карточки будут вставлены сюда с помощью JS -->
+        <!-- Карточки статистики -->
+        <div id="stats-container" class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+            <!-- Карточки будут вставлены сюда -->
         </div>
 
-        <!-- Контейнер для таблицы и загрузчика -->
-        <div class="table-container">
-            <!-- Оверлей с загрузчиком -->
-            <div id="loader-overlay" class="hidden">
-                <div class="pf-c-spinner pf-m-xl" role="progressbar" aria-valuetext="Loading...">
-                    <div class="pf-c-spinner__clipper"></div>
-                    <div class="pf-c-spinner__lead-ball"></div>
-                    <div class="pf-c-spinner__tail-ball"></div>
+        <!-- Контейнер для таблицы и спиннера -->
+        <div class="table-container mt-4 card">
+            <!-- Спиннер -->
+            <div id="loader-overlay" class="d-none">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
-
-            <!-- Таблица PatternFly -->
-            <table class="pf-c-table pf-m-grid-md" role="grid">
-                <thead>
-                    <tr role="row">
-                        <th role="columnheader" scope="col">Status</th>
-                        <th role="columnheader" scope="col">Domain & Title</th>
-                        <th role="columnheader" scope="col">Type & Target</th>
-                        <th role="columnheader" scope="col">Docker Container</th>
-                        <th role="columnheader" scope="col">SSL Expiry</th>
-                    </tr>
-                </thead>
-                <tbody id="sites-tbody" role="rowgroup">
-                    <!-- Данные будут вставлены сюда с помощью JS -->
-                </tbody>
-            </table>
+            
+            <!-- Таблица -->
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Status</th>
+                            <th scope="col">Domain & Title</th>
+                            <th scope="col">Type & Target</th>
+                            <th scope="col">Docker Container</th>
+                            <th scope="col">SSL Expiry</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sites-tbody">
+                        <!-- Данные будут вставлены сюда -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div id="error-container" class="pf-c-alert pf-m-danger pf-m-inline hidden" aria-live="polite">
-            <div class="pf-c-alert__icon"><i class="fas fa-exclamation-circle" aria-hidden="true"></i></div>
-            <h4 class="pf-c-alert__title">Error</h4>
-            <div class="pf-c-alert__description" id="error-message"></div>
+        <!-- Контейнер для ошибок -->
+        <div id="error-container" class="alert alert-danger d-none mt-4" role="alert">
+            <strong id="error-title"></strong>
+            <p id="error-message" class="mb-0"></p>
         </div>
     </div>
+    
+    <!-- JS Bootstrap -->
+    <script src="lib/bootstrap.bundle.min.js"></script>
+    
+    <!-- ИЗМЕНЕНИЕ: Подключаем два наших новых скрипта -->
+    <script src="api.js"></script>
+    <script src="ui.js"></script>
 </body>
 </html>
