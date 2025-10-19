@@ -1,5 +1,5 @@
-/// <reference path="cockpit.d.js" />
 //. @ts-check
+/// <reference path="cockpit.d.js" />
 
 // JSDoc Type Definitions for the data structure returned by the script.
 
@@ -80,23 +80,6 @@ const SCRIPT_PATH = "/usr/local/bin/nginx_info.sh";
  */
 const SCRIPT_URL = "https://gist.githubusercontent.com/AzerQ/9ef12f60e5752e57303cd27a6e46932c/raw/1a584009d3714942ab7cdb7707b122e2d7c24eee/nginx_sites_info.sh";
 
-/**
- * @summary Initializes the component when the page loads.
- * @description Attaches event listeners and triggers the initial data load.
- * @returns {void}
- */
-function init() {
-    cockpit.ready(function() {
-        // Run initial data load
-        ensureScriptAndExecute();
-
-        // Add listener to the refresh button
-        const refreshButton = document.getElementById("refresh-button");
-        if (refreshButton) {
-            refreshButton.addEventListener("click", ensureScriptAndExecute);
-        }
-    });
-}
 
 /**
  * @summary Orchestrates the process: check for script, download if needed, then execute.
@@ -108,14 +91,8 @@ function ensureScriptAndExecute() {
 
     // Check if the script file exists
     cockpit.spawn(["test", "-f", SCRIPT_PATH], { "superuser": "require" })
-        .done(function() {
-            // Script exists, run it
-            runNginxScript();
-        })
-        .fail(function() {
-            // Script does not exist, download it
-            downloadScript();
-        });
+        .done(runNginxScript) // Script exists, run it
+        .fail(downloadScript); // Script does not exist, download it
 }
 
 /**
@@ -127,21 +104,14 @@ function downloadScript() {
     const curl_cmd = ["curl", "-Ls", "-o", SCRIPT_PATH, SCRIPT_URL];
 
     cockpit.spawn(curl_cmd, { "superuser": "require" })
-        .done(function() {
+        .done(() => {
             showLoading("Setting permissions...");
             // Make the script executable
             cockpit.spawn(["chmod", "+x", SCRIPT_PATH], { "superuser": "require" })
-                .done(function() {
-                    // Now that the script is ready, run it
-                    runNginxScript();
-                })
-                .fail(function(err) {
-                    showError("Failed to set script permissions: " + err);
-                });
+                .done(runNginxScript) // Now that the script is ready, run it
+                .fail(err => showError("Failed to set script permissions: " + err));
         })
-        .fail(function(err) {
-            showError("Failed to download script: " + err);
-        });
+        .fail(err => showError("Failed to download script: " + err));
 }
 
 /**
@@ -151,7 +121,7 @@ function downloadScript() {
 function runNginxScript() {
     showLoading("Fetching Nginx data...");
     cockpit.spawn([SCRIPT_PATH], { "superuser": "require" })
-        .done(function(data) {
+        .done(data => {
             try {
                 /** @type {NginxData} */
                 const jsonData = JSON.parse(data);
@@ -163,9 +133,7 @@ function runNginxScript() {
                 console.error("Invalid JSON received:", data);
             }
         })
-        .fail(function(err) {
-            showError("Failed to execute script: " + err);
-        });
+        .fail(err => showError("Failed to execute script: " + err));
 }
 
 /**
@@ -217,18 +185,15 @@ function renderSitesTable(sites) {
     sites.forEach(site => {
         const row = document.createElement("tr");
 
-        // --- Status Column ---
         const statusClass = site.status.state === 'UP' ? 'status-up' : (site.status.state === 'ERROR' ? 'status-error' : 'status-down');
         const statusHtml = `<span class="status-indicator ${statusClass}"></span> ${site.status.state} (${site.status.http_code || 'N/A'})`;
 
-        // --- Domain & Title Column ---
         const protocol = site.ssl.enabled ? 'https' : 'http';
         const domainHtml = `
             <a href="${protocol}://${site.domain}" target="_blank" class="domain-link">${site.domain}</a>
             <div class="page-title">${site.status.page_title || 'No title'}</div>
         `;
 
-        // --- Type & Target Column ---
         let targetHtml = '';
         if (site.content_type === 'proxy') {
             targetHtml = `<span class="label-proxy">Proxy</span> <span class="target-path">${site.proxy.url}</span>`;
@@ -238,10 +203,8 @@ function renderSitesTable(sites) {
             targetHtml = '<span class="label-unknown">Unknown</span>';
         }
 
-        // --- Docker Column ---
         const dockerHtml = site.docker.connected ? `<span class="docker-container">${site.docker.container}</span>` : '<i>N/A</i>';
 
-        // --- SSL Expiry Column ---
         let sslHtml = '<i>Disabled</i>';
         if (site.ssl.enabled && site.ssl.expiry_date) {
             const expiryDate = new Date(site.ssl.expiry_date);
@@ -304,5 +267,14 @@ function hideError() {
     }
 }
 
-// Start the application
-document.addEventListener('DOMContentLoaded', init);
+// --- MAIN EXECUTION ---
+// This is the correct way to initialize a Cockpit component.
+// We wait for the DOM to be ready to safely attach event listeners.
+document.addEventListener("DOMContentLoaded", function() {
+    const refreshButton = document.getElementById("refresh-button");
+    if (refreshButton) {
+        refreshButton.addEventListener("click", ensureScriptAndExecute);
+    }
+    // Trigger the initial data load.
+    ensureScriptAndExecute();
+});
