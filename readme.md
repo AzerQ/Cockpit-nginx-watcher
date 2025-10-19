@@ -49,12 +49,11 @@ Before you begin, ensure your server has the following installed:
 Installation is a simple one-liner. Run the following command as a user with `sudo` privileges:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git /tmp/cockpit-nginx && \
+git clone https://github.com/AzerQ/Cockpit-nginx-watcher /tmp/cockpit-nginx && \
 sudo mv /tmp/cockpit-nginx/nginx /usr/share/cockpit/ && \
 rm -rf /tmp/cockpit-nginx && \
 sudo systemctl restart cockpit
 ```
-*Remember to replace `YOUR_USERNAME/YOUR_REPOSITORY` with your actual repository path.*
 
 ## 🚀 Usage
 
@@ -146,12 +145,11 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 Установка выполняется одной простой командой. Запустите ее от имени пользователя с правами `sudo`:
 
 ```bash
-git clone https://github.com/ВАШ_ЛОГИН/ВАШ_РЕПОЗИТОРИЙ.git /tmp/cockpit-nginx && \
+git clone https://github.com/AzerQ/Cockpit-nginx-watcher /tmp/cockpit-nginx && \
 sudo mv /tmp/cockpit-nginx/nginx /usr/share/cockpit/ && \
 rm -rf /tmp/cockpit-nginx && \
 sudo systemctl restart cockpit
 ```
-*Не забудьте заменить `ВАШ_ЛОГИН/ВАШ_РЕПОЗИТОРИЙ` на реальный путь к вашему репозиторию.*
 
 ## 🚀 Использование
 
