@@ -1,8 +1,13 @@
 {
-  "name": "nginx",
-  "label": "Nginx Sites",
-  "path": "nginx.html",
-  "description": "Displays detailed information about configured Nginx sites",
-  "icon": "pficon-server",
-  "permission": "superuser"
+    "version": 0.2,
+
+    "menu": {
+        "index": {
+            "label": "Nginx Sites",
+            "path": "nginx.html",
+            "order": 130
+        }
+    },
+    "content-security-policy": "default-src 'self' https: 'unsafe-inline'; connect-src wss: https: "
+
 }
