@@ -3,39 +3,57 @@
 <head>
     <meta charset="utf-8">
     <title>Nginx Sites</title>
+    <!-- CSS от Cockpit/PatternFly уже подключен на странице, мы используем его классы -->
     <link rel="stylesheet" type="text/css" href="nginx.css">
     <script src="../base1/cockpit.js"></script>
     <script src="nginx.js"></script>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="header-controls">
-            <h1>Nginx Sites</h1>
+    <!-- PatternFly Page Structure -->
+    <div class="pf-c-page__main-section pf-m-light">
+        <div class="pf-l-level pf-m-gutter">
+            <h1 class="pf-c-title pf-m-2xl">Nginx Sites</h1>
             <button id="refresh-button" class="pf-c-button pf-m-primary">Refresh</button>
         </div>
 
-        <!-- Статистика -->
-        <div id="stats-container" class="stats-grid"></div>
+        <!-- Статистика в виде карточек PatternFly -->
+        <div id="stats-container" class="pf-l-grid pf-m-gutter">
+            <!-- Карточки будут вставлены сюда с помощью JS -->
+        </div>
 
-        <!-- Таблица с сайтами -->
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
+        <!-- Контейнер для таблицы и загрузчика -->
+        <div class="table-container">
+            <!-- Оверлей с загрузчиком -->
+            <div id="loader-overlay" class="hidden">
+                <div class="pf-c-spinner pf-m-xl" role="progressbar" aria-valuetext="Loading...">
+                    <div class="pf-c-spinner__clipper"></div>
+                    <div class="pf-c-spinner__lead-ball"></div>
+                    <div class="pf-c-spinner__tail-ball"></div>
+                </div>
+            </div>
+
+            <!-- Таблица PatternFly -->
+            <table class="pf-c-table pf-m-grid-md" role="grid">
                 <thead>
-                    <tr>
-                        <th class="status-col">Status</th>
-                        <th>Domain & Title</th>
-                        <th>Type & Target</th>
-                        <th>Docker Container</th>
-                        <th>SSL Expiry</th>
+                    <tr role="row">
+                        <th role="columnheader" scope="col">Status</th>
+                        <th role="columnheader" scope="col">Domain & Title</th>
+                        <th role="columnheader" scope="col">Type & Target</th>
+                        <th role="columnheader" scope="col">Docker Container</th>
+                        <th role="columnheader" scope="col">SSL Expiry</th>
                     </tr>
                 </thead>
-                <tbody id="sites-tbody">
+                <tbody id="sites-tbody" role="rowgroup">
                     <!-- Данные будут вставлены сюда с помощью JS -->
                 </tbody>
             </table>
         </div>
 
-        <div id="error-container" class="alert alert-danger hidden"></div>
+        <div id="error-container" class="pf-c-alert pf-m-danger pf-m-inline hidden" aria-live="polite">
+            <div class="pf-c-alert__icon"><i class="fas fa-exclamation-circle" aria-hidden="true"></i></div>
+            <h4 class="pf-c-alert__title">Error</h4>
+            <div class="pf-c-alert__description" id="error-message"></div>
+        </div>
     </div>
 </body>
 </html>

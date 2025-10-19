@@ -80,13 +80,28 @@ const SCRIPT_PATH = "/usr/local/bin/nginx_info.sh";
  */
 const SCRIPT_URL = "https://gist.githubusercontent.com/AzerQ/9ef12f60e5752e57303cd27a6e46932c/raw/1a584009d3714942ab7cdb7707b122e2d7c24eee/nginx_sites_info.sh";
 
+/**
+ * @summary Shows the loading spinner overlay.
+ * @returns {void}
+ */
+function showSpinner() {
+    document.getElementById("loader-overlay")?.classList.remove("hidden");
+}
+
+/**
+ * @summary Hides the loading spinner overlay.
+ * @returns {void}
+ */
+function hideSpinner() {
+    document.getElementById("loader-overlay")?.classList.add("hidden");
+}
 
 /**
  * @summary Orchestrates the process: check for script, download if needed, then execute.
  * @returns {void}
  */
 function ensureScriptAndExecute() {
-    showLoading("Checking for script...");
+    showSpinner(); // Показываем спиннер в самом начале
     hideError();
 
     // Check if the script file exists
@@ -100,18 +115,20 @@ function ensureScriptAndExecute() {
  * @returns {void}
  */
 function downloadScript() {
-    showLoading("Downloading script...");
     const curl_cmd = ["curl", "-Ls", "-o", SCRIPT_PATH, SCRIPT_URL];
-
     cockpit.spawn(curl_cmd, { "superuser": "require" })
         .done(() => {
-            showLoading("Setting permissions...");
-            // Make the script executable
             cockpit.spawn(["chmod", "+x", SCRIPT_PATH], { "superuser": "require" })
-                .done(runNginxScript) // Now that the script is ready, run it
-                .fail(err => showError("Failed to set script permissions: " + err));
+                .done(runNginxScript)
+                .fail(err => {
+                    showError("Failed to set script permissions: " + err);
+                    hideSpinner(); // Прячем спиннер при ошибке
+                });
         })
-        .fail(err => showError("Failed to download script: " + err));
+        .fail(err => {
+            showError("Failed to download script: " + err);
+            hideSpinner(); // Прячем спиннер при ошибке
+        });
 }
 
 /**
@@ -119,7 +136,6 @@ function downloadScript() {
  * @returns {void}
  */
 function runNginxScript() {
-    showLoading("Fetching Nginx data...");
     cockpit.spawn([SCRIPT_PATH], { "superuser": "require" })
         .done(data => {
             try {
@@ -131,14 +147,19 @@ function runNginxScript() {
             } catch (e) {
                 showError("Failed to parse JSON data from script: " + e.message);
                 console.error("Invalid JSON received:", data);
+            } finally {
+                hideSpinner(); // Прячем спиннер после рендеринга
             }
         })
-        .fail(err => showError("Failed to execute script: " + err));
+        .fail(err => {
+            showError("Failed to execute script: " + err);
+            hideSpinner(); // Прячем спиннер при ошибке
+        });
 }
 
 /**
- * @summary Renders the summary statistics cards.
- * @param {Statistics} stats - The statistics object from the script output.
+ * @summary Renders the summary statistics cards using PatternFly structure.
+ * @param {Statistics} stats - The statistics object.
  * @returns {void}
  */
 function renderStatistics(stats) {
@@ -147,21 +168,29 @@ function renderStatistics(stats) {
 
     const nginxStatusClass = stats.nginx_status === 'active' ? 'status-ok' : 'status-error';
     container.innerHTML = `
-        <div class="stat-card">
-            <div class="stat-value">${stats.total_sites}</div>
-            <div class="stat-label">Total Sites</div>
+        <div class="pf-l-grid__item pf-m-12-col pf-m-6-col-on-md pf-m-3-col-on-xl">
+            <div class="pf-c-card"><div class="pf-c-card__body">
+                <div class="stat-value">${stats.total_sites}</div>
+                <div class="stat-label">Total Sites</div>
+            </div></div>
         </div>
-        <div class="stat-card">
-            <div class="stat-value">${stats.ssl_enabled_sites}</div>
-            <div class="stat-label">SSL Enabled</div>
+        <div class="pf-l-grid__item pf-m-12-col pf-m-6-col-on-md pf-m-3-col-on-xl">
+            <div class="pf-c-card"><div class="pf-c-card__body">
+                <div class="stat-value">${stats.ssl_enabled_sites}</div>
+                <div class="stat-label">SSL Enabled</div>
+            </div></div>
         </div>
-        <div class="stat-card">
-            <div class="stat-value ${nginxStatusClass}">${stats.nginx_status}</div>
-            <div class="stat-label">Nginx Status</div>
+        <div class="pf-l-grid__item pf-m-12-col pf-m-6-col-on-md pf-m-3-col-on-xl">
+            <div class="pf-c-card"><div class="pf-c-card__body">
+                <div class="stat-value ${nginxStatusClass}">${stats.nginx_status}</div>
+                <div class="stat-label">Nginx Status</div>
+            </div></div>
         </div>
-        <div class="stat-card">
-            <div class="stat-value">${stats.docker_containers_running}</div>
-            <div class="stat-label">Docker Containers</div>
+        <div class="pf-l-grid__item pf-m-12-col pf-m-6-col-on-md pf-m-3-col-on-xl">
+            <div class="pf-c-card"><div class="pf-c-card__body">
+                <div class="stat-value">${stats.docker_containers_running}</div>
+                <div class="stat-label">Docker Containers</div>
+            </div></div>
         </div>
     `;
 }
@@ -175,17 +204,18 @@ function renderSitesTable(sites) {
     const tbody = document.getElementById("sites-tbody");
     if (!tbody) return;
 
-    tbody.innerHTML = ""; // Clear the table before updating
+    tbody.innerHTML = "";
 
     if (!sites || sites.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5">No sites found in Nginx configuration.</td></tr>';
+        tbody.innerHTML = '<tr role="row"><td role="cell" colspan="5"><div class="pf-c-empty-state"><div class="pf-c-empty-state__content"><h2 class="pf-c-title pf-m-lg">No sites found</h2><div class="pf-c-empty-state__body">Check your Nginx configuration.</div></div></div></td></tr>';
         return;
     }
 
     sites.forEach(site => {
         const row = document.createElement("tr");
+        row.setAttribute("role", "row");
 
-        const statusClass = site.status.state === 'UP' ? 'status-up' : (site.status.state === 'ERROR' ? 'status-error' : 'status-down');
+        const statusClass = site.status.state === 'UP' ? 'status-up' : 'status-error';
         const statusHtml = `<span class="status-indicator ${statusClass}"></span> ${site.status.state} (${site.status.http_code || 'N/A'})`;
 
         const protocol = site.ssl.enabled ? 'https' : 'http';
@@ -196,11 +226,11 @@ function renderSitesTable(sites) {
 
         let targetHtml = '';
         if (site.content_type === 'proxy') {
-            targetHtml = `<span class="label-proxy">Proxy</span> <span class="target-path">${site.proxy.url}</span>`;
+            targetHtml = `<div><span class="pf-c-label pf-m-blue">Proxy</span></div><div class="target-path">${site.proxy.url}</div>`;
         } else if (site.content_type === 'static') {
-            targetHtml = `<span class="label-static">Static</span> <span class="target-path">${site.static.root_path}</span>`;
+            targetHtml = `<div><span class="pf-c-label pf-m-green">Static</span></div><div class="target-path">${site.static.root_path}</div>`;
         } else {
-            targetHtml = '<span class="label-unknown">Unknown</span>';
+            targetHtml = `<div><span class="pf-c-label">Unknown</span></div>`;
         }
 
         const dockerHtml = site.docker.connected ? `<span class="docker-container">${site.docker.container}</span>` : '<i>N/A</i>';
@@ -220,27 +250,15 @@ function renderSitesTable(sites) {
         }
 
         row.innerHTML = `
-            <td>${statusHtml}</td>
-            <td>${domainHtml}</td>
-            <td>${targetHtml}</td>
-            <td>${dockerHtml}</td>
-            <td>${sslHtml}</td>
+            <td role="cell" data-label="Status">${statusHtml}</td>
+            <td role="cell" data-label="Domain & Title">${domainHtml}</td>
+            <td role="cell" data-label="Type & Target">${targetHtml}</td>
+            <td role="cell" data-label="Docker Container">${dockerHtml}</td>
+            <td role="cell" data-label="SSL Expiry">${sslHtml}</td>
         `;
 
         tbody.appendChild(row);
     });
-}
-
-/**
- * @summary Displays a loading message in the table body.
- * @param {string} [message="Loading data..."] - The message to display.
- * @returns {void}
- */
-function showLoading(message = "Loading data...") {
-    const tbody = document.getElementById("sites-tbody");
-    if (tbody) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">${message}</td></tr>`;
-    }
 }
 
 /**
@@ -250,8 +268,9 @@ function showLoading(message = "Loading data...") {
  */
 function showError(message) {
     const errorContainer = document.getElementById("error-container");
-    if (errorContainer) {
-        errorContainer.textContent = message;
+    const errorMessage = document.getElementById("error-message");
+    if (errorContainer && errorMessage) {
+        errorMessage.textContent = message;
         errorContainer.classList.remove("hidden");
     }
 }
@@ -268,13 +287,10 @@ function hideError() {
 }
 
 // --- MAIN EXECUTION ---
-// This is the correct way to initialize a Cockpit component.
-// We wait for the DOM to be ready to safely attach event listeners.
 document.addEventListener("DOMContentLoaded", function() {
     const refreshButton = document.getElementById("refresh-button");
     if (refreshButton) {
         refreshButton.addEventListener("click", ensureScriptAndExecute);
     }
-    // Trigger the initial data load.
     ensureScriptAndExecute();
 });

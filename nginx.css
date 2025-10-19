@@ -1,66 +1,76 @@
-/* Общие стили */
-.header-controls {
+/* Контейнер для таблицы, чтобы позиционировать загрузчик относительно него */
+.table-container {
+    position: relative;
+    margin-top: 24px; /* pf-global--spacer--lg */
+}
+
+/* Оверлей для загрузчика */
+#loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 10;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
 }
 
-/* Стили для статистики */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-    margin-bottom: 20px;
+/* Скрытый класс */
+.hidden {
+    display: none !important;
 }
-.stat-card {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 15px;
-    text-align: center;
+
+/* Мелкие доработки для контента в таблице */
+.domain-link {
+    font-weight: 600; /* semi-bold */
 }
-.stat-value {
-    font-size: 2em;
-    font-weight: bold;
-}
-.stat-label {
+.page-title {
     font-size: 0.9em;
-    color: #666;
+    color: #6a6e73; /* pf-global--Color--200 */
 }
 
-/* Стили для таблицы */
-.status-col { width: 120px; }
+.target-path, .docker-container {
+    font-family: monospace;
+    background-color: #f5f5f5;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Цветовые индикаторы статуса */
 .status-indicator {
     display: inline-block;
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    margin-right: 5px;
+    margin-right: 8px; /* pf-global--spacer--sm */
 }
-.status-up { background-color: #3f9c35; } /* Green */
-.status-error, .status-down { background-color: #c9190b; } /* Red */
-.domain-link { font-weight: bold; }
-.page-title { font-size: 0.9em; color: #555; }
+.status-up { background-color: #3e8635; } /* pf-global--success-color--100 */
+.status-error, .status-down { background-color: #c9190b; } /* pf-global--danger-color--100 */
 
-/* Метки типа контента */
-.label-proxy, .label-static, .label-unknown {
-    padding: 2px 6px;
-    border-radius: 4px;
-    color: white;
-    font-size: 0.8em;
-    font-weight: bold;
+/* Цвета для срока действия SSL */
+.ssl-ok { color: #1e4f18; }
+.ssl-warning { color: #f0ad4e; font-weight: 600; }
+.ssl-critical { color: #c9190b; font-weight: 600; }
+
+.ssl-warning span, .ssl-critical span {
+    font-size: 0.9em;
 }
-.label-proxy { background-color: #007bff; }
-.label-static { background-color: #28a745; }
-.label-unknown { background-color: #6c757d; }
-.target-path { font-family: monospace; font-size: 0.9em; }
-.docker-container { font-family: monospace; }
 
-/* Стили для SSL */
-.ssl-ok { color: #3f9c35; }
-.ssl-warning { color: #f0ad4e; font-weight: bold; }
-.ssl-critical { color: #d9534f; font-weight: bold; }
-.ssl-warning span, .ssl-critical span { font-size: 0.9em; }
-
-.hidden { display: none; }
+/* Статистика */
+.stat-value {
+    font-size: 2em;
+    font-weight: 600;
+}
+.stat-label {
+    font-size: 0.9em;
+    color: #6a6e73;
+}
+.status-ok {
+    color: #3e8635;
+}
+.status-error {
+    color: #c9190b;
+}
