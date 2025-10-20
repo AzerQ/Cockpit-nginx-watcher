@@ -15,6 +15,7 @@ The extension is designed to be self-contained: if the required helper script is
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
 - **UI Framework**: Bootstrap 5
+- **Code Editor**: CodeMirror 5.65.16 (with nginx mode)
 - **Type Safety**: JSDoc with TypeScript type checking
 - **Backend**: Bash scripting (helper script)
 - **API**: Cockpit JavaScript API
@@ -23,6 +24,7 @@ The extension is designed to be self-contained: if the required helper script is
 
 ## ✨ Features
 
+### Dashboard
 *   **📊 Comprehensive Dashboard**: Displays all Nginx sites in a clean, sortable table.
 *   **🚀 Live Status Check**: Shows real-time status (UP, DOWN, ERROR) with HTTP codes for each site.
 *   **📄 Page Title Fetching**: Fetches and displays the `<title>` of each site's homepage for easy identification.
@@ -31,6 +33,14 @@ The extension is designed to be self-contained: if the required helper script is
 *   **⚙️ Smart Installation**: The helper shell script is downloaded automatically if not found, making installation a breeze.
 *   **💡 Detailed Information**: Provides insights into content type (Proxy vs. Static), target URL/path, and the Nginx config file for each site.
 *   **🔄 One-Click Refresh**: Update all site statuses with a single click.
+
+### Configuration Editor
+*   **✏️ Syntax Highlighting**: Full nginx configuration syntax highlighting using CodeMirror.
+*   **🎯 Autocompletion**: Context-aware autocompletion for nginx directives (trigger with Ctrl+Space).
+*   **📁 File Browser**: Browse and edit all nginx configuration files organized by category.
+*   **✅ Config Testing**: Test nginx configuration syntax before applying changes.
+*   **🔄 Safe Reload**: Reload nginx service with automatic configuration validation.
+*   **⌨️ Keyboard Shortcuts**: Ctrl+S to save, Ctrl+Space for autocomplete.
 
 ## 🧠 How It Works
 
@@ -181,6 +191,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 - **Фронтенд**: HTML5, CSS3, JavaScript (ES6+)
 - **UI-фреймворк**: Bootstrap 5
+- **Редактор кода**: CodeMirror 5.65.16 (с режимом nginx)
 - **Типобезопасность**: JSDoc с проверкой типов TypeScript
 - **Бэкенд**: Bash-скрипты (вспомогательный скрипт)
 - **API**: Cockpit JavaScript API
@@ -189,6 +200,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## ✨ Возможности
 
+### Панель управления
 *   **📊 Комплексная панель**: Отображает все сайты Nginx в удобной таблице с возможностью сортировки.
 *   **🚀 Проверка статуса в реальном времени**: Показывает актуальный статус (UP, DOWN, ERROR) с HTTP-кодом для каждого сайта.
 *   **📄 Получение заголовков**: Загружает и отображает `<title>` с главной страницы каждого сайта для легкой идентификации.
@@ -197,6 +209,14 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 *   **⚙️ Умная установка**: Вспомогательный shell-скрипт загружается автоматически, если не найден, что делает установку максимально простой.
 *   **💡 Подробная информация**: Предоставляет данные о типе контента (Proxy или Static), целевом URL/пути и конфигурационном файле Nginx для каждого сайта.
 *   **🔄 Обновление в один клик**: Позволяет обновить статусы всех сайтов одним нажатием кнопки.
+
+### Редактор конфигураций
+*   **✏️ Подсветка синтаксиса**: Полная подсветка синтаксиса конфигураций nginx с использованием CodeMirror.
+*   **🎯 Автодополнение**: Контекстное автодополнение директив nginx (вызов через Ctrl+Space).
+*   **📁 Браузер файлов**: Просмотр и редактирование всех конфигурационных файлов nginx, организованных по категориям.
+*   **✅ Тестирование конфигурации**: Проверка синтаксиса конфигурации nginx перед применением изменений.
+*   **🔄 Безопасная перезагрузка**: Перезагрузка службы nginx с автоматической валидацией конфигурации.
+*   **⌨️ Горячие клавиши**: Ctrl+S для сохранения, Ctrl+Space для автодополнения.
 
 ## 🧠 Как это работает
 
