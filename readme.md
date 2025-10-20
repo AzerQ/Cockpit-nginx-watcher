@@ -31,6 +31,7 @@ The extension is designed to be self-contained: if the required helper script is
 *   **⚙️ Smart Installation**: The helper shell script is downloaded automatically if not found, making installation a breeze.
 *   **💡 Detailed Information**: Provides insights into content type (Proxy vs. Static), target URL/path, and the Nginx config file for each site.
 *   **🔄 One-Click Refresh**: Update all site statuses with a single click.
+*   **✏️ Built-in Config Editor**: Edit Nginx configuration files directly in the browser with syntax highlighting and auto-completion (Ctrl+Space). Includes automatic backups, configuration testing before saving, and rollback on errors.
 
 ## 🧠 How It Works
 
@@ -81,6 +82,15 @@ git clone https://github.com/AzerQ/Cockpit-nginx-watcher
 1.  Log in to your Cockpit web interface (usually at `https://your_server_ip:9090`).
 2.  You will find a new **"Nginx Sites"** tab in the main navigation menu on the left.
 3.  Click it to view the dashboard. The data will be loaded automatically.
+4.  To edit a site's configuration, click the **"Edit"** button in the Actions column.
+5.  The configuration editor will open with:
+    - **Syntax highlighting** for Nginx directives, comments, strings, and variables
+    - **Auto-completion** (press Ctrl+Space) for common Nginx directives
+    - **Tab key support** for proper indentation
+    - **Test Configuration** button to validate changes before saving
+    - **Automatic backup** creation before any changes
+    - **Automatic rollback** if configuration test fails
+6.  After saving, Nginx will be automatically reloaded with the new configuration.
 
 ## 👨‍💻 For Developers
 
@@ -130,8 +140,9 @@ All JavaScript files include JSDoc type annotations. The `cockpit.d.js` file pro
 Cockpit-nginx-watcher/
 ├── api.js              # Data fetching logic: script execution and JSON parsing
 ├── cockpit.d.js        # JSDoc type definitions for the Cockpit API (for IntelliSense)
+├── editor.js           # Configuration file editor with syntax highlighting and auto-completion
 ├── manifest.json       # Extension manifest (permissions, name, icon)
-├── nginx.css           # All custom styles for the dashboard
+├── nginx.css           # All custom styles for the dashboard and editor
 ├── nginx.html          # The HTML structure of the page
 ├── ui.js               # UI rendering logic: handles DOM manipulations
 ├── readme.md           # This documentation file
@@ -143,9 +154,10 @@ Cockpit-nginx-watcher/
 ```
 
 *   **`api.js`**: Contains all the backend communication logic. It checks for the helper script, downloads it if needed, and executes it to fetch Nginx data.
+*   **`editor.js`**: Provides a full-featured configuration file editor with syntax highlighting, auto-completion (Ctrl+Space), automatic backups, and configuration testing. Includes JSDoc type annotations for type safety.
 *   **`ui.js`**: Handles all UI rendering and DOM manipulations. It displays statistics, renders the sites table, and manages loading states.
 *   **`nginx.html`**: The main HTML page structure with Bootstrap 5 components.
-*   **`nginx.css`**: Custom CSS styles for the dashboard.
+*   **`nginx.css`**: Custom CSS styles for the dashboard and code editor, including syntax highlighting colors.
 *   **`cockpit.d.js`**: JSDoc type definitions for the Cockpit API, enabling IntelliSense and type checking in modern IDEs.
 *   **`manifest.json`**: Defines the extension metadata, permissions, and menu entry.
 *   **`lib/`**: Contains Bootstrap 5 framework files (CSS and JavaScript) for responsive UI components.
@@ -197,6 +209,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 *   **⚙️ Умная установка**: Вспомогательный shell-скрипт загружается автоматически, если не найден, что делает установку максимально простой.
 *   **💡 Подробная информация**: Предоставляет данные о типе контента (Proxy или Static), целевом URL/пути и конфигурационном файле Nginx для каждого сайта.
 *   **🔄 Обновление в один клик**: Позволяет обновить статусы всех сайтов одним нажатием кнопки.
+*   **✏️ Встроенный редактор конфигов**: Редактируйте конфигурационные файлы Nginx прямо в браузере с подсветкой синтаксиса и автодополнением (Ctrl+Space). Включает автоматическое резервное копирование, тестирование конфигурации перед сохранением и откат при ошибках.
 
 ## 🧠 Как это работает
 
@@ -247,6 +260,15 @@ git clone https://github.com/AzerQ/Cockpit-nginx-watcher
 1.  Войдите в веб-интерфейс Cockpit (обычно по адресу `https://ip_вашего_сервера:9090`).
 2.  В главном меню навигации слева вы найдете новый пункт **"Nginx Sites"**.
 3.  Нажмите на него, чтобы открыть панель управления. Данные будут загружены автоматически.
+4.  Чтобы отредактировать конфигурацию сайта, нажмите кнопку **"Edit"** в колонке Actions.
+5.  Откроется редактор конфигурации с:
+    - **Подсветкой синтаксиса** для директив Nginx, комментариев, строк и переменных
+    - **Автодополнением** (нажмите Ctrl+Space) для распространенных директив Nginx
+    - **Поддержкой клавиши Tab** для правильных отступов
+    - Кнопкой **Test Configuration** для проверки изменений перед сохранением
+    - **Автоматическим созданием резервной копии** перед любыми изменениями
+    - **Автоматическим откатом** при неудачной проверке конфигурации
+6.  После сохранения Nginx будет автоматически перезагружен с новой конфигурацией.
 
 ## 👨‍💻 Для разработчиков
 
@@ -296,8 +318,9 @@ git clone https://github.com/AzerQ/Cockpit-nginx-watcher
 Cockpit-nginx-watcher/
 ├── api.js              # Логика получения данных: выполнение скрипта и парсинг JSON
 ├── cockpit.d.js        # JSDoc-определения типов для Cockpit API (для автодополнения в IDE)
+├── editor.js           # Редактор конфигурационных файлов с подсветкой синтаксиса и автодополнением
 ├── manifest.json       # Манифест расширения (права, название, иконка)
-├── nginx.css           # Все кастомные стили для панели
+├── nginx.css           # Все кастомные стили для панели и редактора
 ├── nginx.html          # HTML-структура страницы
 ├── ui.js               # Логика отображения UI: манипуляции с DOM
 ├── readme.md           # Этот файл документации
@@ -309,9 +332,10 @@ Cockpit-nginx-watcher/
 ```
 
 *   **`api.js`**: Содержит всю логику взаимодействия с бэкендом. Проверяет наличие вспомогательного скрипта, загружает его при необходимости и выполняет для получения данных Nginx.
+*   **`editor.js`**: Предоставляет полнофункциональный редактор конфигурационных файлов с подсветкой синтаксиса, автодополнением (Ctrl+Space), автоматическим резервным копированием и тестированием конфигурации. Включает JSDoc аннотации типов для типобезопасности.
 *   **`ui.js`**: Обрабатывает все операции рендеринга UI и манипуляции с DOM. Отображает статистику, таблицу сайтов и управляет состояниями загрузки.
 *   **`nginx.html`**: Основная HTML-структура страницы с компонентами Bootstrap 5.
-*   **`nginx.css`**: Пользовательские CSS-стили для панели управления.
+*   **`nginx.css`**: Пользовательские CSS-стили для панели управления и редактора кода, включая цвета подсветки синтаксиса.
 *   **`cockpit.d.js`**: JSDoc-определения типов для Cockpit API, обеспечивающие автодополнение и проверку типов в современных IDE.
 *   **`manifest.json`**: Определяет метаданные расширения, права доступа и пункт меню.
 *   **`lib/`**: Содержит файлы фреймворка Bootstrap 5 (CSS и JavaScript) для адаптивных UI-компонентов.
