@@ -6,6 +6,11 @@
             "label": "Nginx Sites",
             "path": "nginx.html",
             "order": 130
+        },
+        "config-editor": {
+            "label": "Config Editor",
+            "path": "config-editor.html",
+            "order": 131
         }
     },
     "content-security-policy": "default-src 'self' https: 'unsafe-inline'; connect-src wss: https: "

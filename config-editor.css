@@ -1,0 +1,67 @@
+/* Config Editor Styles */
+
+#editor-container {
+    position: relative;
+    min-height: 500px;
+}
+
+.CodeMirror {
+    height: 600px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.font-monospace {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Enhanced CodeMirror styling */
+.CodeMirror-focused {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Status messages */
+.test-output {
+    font-family: monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    border-left: 4px solid #0d6efd;
+}
+
+.test-output.success {
+    border-left-color: #198754;
+}
+
+.test-output.error {
+    border-left-color: #dc3545;
+}
+
+/* File path display */
+#config-path {
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    font-size: 14px;
+}
