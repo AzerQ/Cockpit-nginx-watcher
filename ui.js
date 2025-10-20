@@ -44,7 +44,7 @@ function renderSitesTable(sites) {
     if (!tbody) return;
     tbody.innerHTML = "";
     if (!sites || sites.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center p-5"><h4>No sites found</h4><p class="text-muted">Check your Nginx configuration.</p></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center p-5"><h4>No sites found</h4><p class="text-muted">Check your Nginx configuration.</p></td></tr>';
         return;
     }
     sites.forEach(site => {
@@ -73,11 +73,25 @@ function renderSitesTable(sites) {
             else if (daysLeft < 30) expiryClass = 'ssl-warning';
             sslHtml = `<div class="${expiryClass}">${dateString} <span>(${daysLeft} days)</span></div>`;
         }
+        const actionsHtml = `<button class="btn btn-sm btn-primary btn-edit" data-config="${site.config_file}" data-domain="${site.domain}">
+            <i class="bi bi-pencil"></i> Edit
+        </button>`;
         row.innerHTML = `
             <td>${statusHtml}</td><td>${domainHtml}</td><td>${targetHtml}</td>
-            <td>${dockerHtml}</td><td>${sslHtml}</td>
+            <td>${dockerHtml}</td><td>${sslHtml}</td><td>${actionsHtml}</td>
         `;
         tbody.appendChild(row);
+    });
+    
+    // Add event listeners to edit buttons
+    document.querySelectorAll('.btn-edit').forEach(button => {
+        button.addEventListener('click', function() {
+            const configFile = this.getAttribute('data-config');
+            const domain = this.getAttribute('data-domain');
+            if (configFile && domain && typeof openConfigEditor !== 'undefined') {
+                openConfigEditor(configFile, domain);
+            }
+        });
     });
 }
 

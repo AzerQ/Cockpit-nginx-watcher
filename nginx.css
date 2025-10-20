@@ -66,3 +66,142 @@
 }
 .status-ok { color: #198754; }
 .status-error { color: #dc3545; }
+
+/* Edit button in table */
+.btn-edit {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Editor styles */
+.editor-container {
+    position: relative;
+    height: 600px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #1e1e1e;
+    overflow: hidden;
+}
+
+.editor-textarea {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    margin: 0;
+    border: none;
+    background: transparent;
+    color: transparent;
+    caret-color: #ffffff;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    white-space: pre;
+    word-wrap: normal;
+    overflow-wrap: normal;
+    z-index: 2;
+}
+
+.editor-highlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    margin: 0;
+    border: none;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    white-space: pre;
+    word-wrap: normal;
+    overflow-wrap: normal;
+    overflow: auto;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.editor-highlight code {
+    display: block;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.editor-info {
+    padding: 8px 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Syntax highlighting colors */
+.syntax-keyword {
+    color: #569cd6;
+    font-weight: 600;
+}
+
+.syntax-comment {
+    color: #6a9955;
+    font-style: italic;
+}
+
+.syntax-string {
+    color: #ce9178;
+}
+
+.syntax-number {
+    color: #b5cea8;
+}
+
+.syntax-value {
+    color: #9cdcfe;
+}
+
+.syntax-variable {
+    color: #4ec9b0;
+}
+
+.syntax-brace {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.syntax-semicolon {
+    color: #d4d4d4;
+}
+
+/* Auto-complete popup */
+.editor-autocomplete-popup {
+    position: fixed;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 9999;
+    min-width: 150px;
+}
+
+.autocomplete-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.autocomplete-item:hover {
+    background-color: #e9ecef;
+}
+
+.autocomplete-item:first-child {
+    background-color: #f0f0f0;
+}
