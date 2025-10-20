@@ -50,9 +50,39 @@ const NGINX_COMMON_VALUES = [
  */
 function readConfigFile(configPath) {
     return new Promise((resolve, reject) => {
-        cockpit.spawn(['cat', configPath], { 'superuser': 'require' })
-            .done(data => resolve(data))
-            .fail(err => reject({ title: 'Read Error', message: 'Failed to read config file: ' + err }));
+        // First check if file exists
+        cockpit.spawn(['test', '-f', configPath], { 'superuser': 'require', 'err': 'message' })
+            .done(() => {
+                // File exists, now try to read it
+                cockpit.spawn(['cat', configPath], { 
+                    'superuser': 'require',
+                    'err': 'message'
+                })
+                .done(data => {
+                    if (data && data.length > 0) {
+                        resolve(data);
+                    } else {
+                        reject({ 
+                            title: 'Read Error', 
+                            message: `Configuration file "${configPath}" is empty` 
+                        });
+                    }
+                })
+                .fail((err, output) => {
+                    console.error('cat command failed:', err, output);
+                    reject({ 
+                        title: 'Read Error', 
+                        message: `Failed to read config file "${configPath}": ${err}\nOutput: ${output || 'none'}` 
+                    });
+                });
+            })
+            .fail((err, output) => {
+                console.error('File check failed:', err, output);
+                reject({ 
+                    title: 'File Not Found', 
+                    message: `Configuration file "${configPath}" does not exist or is not accessible.\nError: ${err}\nOutput: ${output || 'none'}` 
+                });
+            });
     });
 }
 
